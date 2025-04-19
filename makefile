@@ -5,7 +5,7 @@ ifeq ($(WORKSPACE),)
 	WORKSPACE := $(shell pwd)/../../../../
 endif
 
-export GO_LDFLAGS=-ldflags "-s -w -X github.com/aws/aws-xray-daemon/pkg/cfg.Version=${VERSION}"
+export GO_LDFLAGS=-ldflags "-X github.com/aws/aws-xray-daemon/pkg/cfg.Version=${VERSION}"
 
 # Initialize BGO_SPACE
 export BGO_SPACE=$(shell pwd)
@@ -35,7 +35,7 @@ build-mac-amd64:
 .PHONY: build-mac-arm64
 build-mac-arm64:
 	@echo "Build for MAC arm64"
-	GOOS=darwin GOARCH=arm64 CGO_ENABLED=0 go build $(GO_LDFLAGS) -o $(BGO_SPACE)/build/xray-mac-arm64/xray ${PREFIX}/cmd/tracing/daemon.go ${PREFIX}/cmd/tracing/tracing.go
+	GOOS=darwin GOARCH=arm64 CGO_ENABLED=0 go build -gcflags="-N -l" $(GO_LDFLAGS) -o $(BGO_SPACE)/build/xray-mac-arm64/xray ${PREFIX}/cmd/tracing/daemon.go ${PREFIX}/cmd/tracing/tracing.go
 
 .PHONY: build-linux-amd64
 build-linux-amd64:
